@@ -1,333 +1,573 @@
 import Link from "next/link";
+import { CollaborationPhoto } from "@/components/collaboration-photo";
 import {
-  ArrowDown,
-  ArrowUpRight,
-  Check,
-  Code2,
+  ArrowRight,
+  CheckCircle2,
+  Cpu,
+  Layers3,
+  Cloud,
+  ShieldCheck,
   Compass,
-  Layers,
+  Code2,
+  Workflow,
   Sparkles,
+  Globe2,
+  ScanLine,
+  Boxes,
+  Lightbulb,
+  Check,
+  LayoutDashboard,
+  Smartphone,
 } from "lucide-react";
 import { Button, CTA, Eyebrow, SectionHeading } from "@/components/ui";
-import { Reveal } from "@/components/motion";
+import { Reveal, Count } from "@/components/motion";
+import { Visual } from "@/components/visual";
 import { Art } from "@/components/art";
 import { BookingDemo, DashboardDemo } from "@/components/demos";
+import { ProcessJourney } from "@/components/process-journey";
+import { PlatformExperience } from "@/components/platform-experience";
 import { services } from "@/content/services";
-import { process } from "@/content/company";
+import { solutions } from "@/content/studio";
+import { experience } from "@/content/company";
 import { articles, readingTime } from "@/content/insights";
 import { metadata } from "@/lib/seo";
-
+const serviceIcons = [Cpu, Layers3, Cloud, ShieldCheck];
 export const generateMetadata = () =>
   metadata(
-    "Acenara — Good ideas. Exceptional execution.",
-    "Acenara brings design and engineering together to build thoughtful websites, apps, AI workflows, and digital platforms. Based in Lahore. Working internationally.",
+    "Acenara — Software for your next big move",
+    "Acenara designs and engineers websites, applications, AI workflows, and connected business platforms. Based in Lahore. Built for international collaboration.",
   );
 
 export default function Home() {
   return (
     <>
-      <section className="home-hero">
+      <section className="home-hero hero-rich">
+        <div className="hero-grid-pattern" aria-hidden="true" />
         <div className="container hero-inner">
           <div className="hero-copy">
-            <Eyebrow>Independent thinking. Connected expertise.</Eyebrow>
+            <div className="hero-label">
+              <span />
+              SOFTWARE. PRODUCTS. POSSIBILITIES.
+            </div>
             <h1>
-              Good ideas.
+              Software for
               <br />
-              Exceptional
+              your next
               <br />
-              <em>execution.</em>
-              <span className="hero-period" aria-hidden="true">
-                ●
-              </span>
+              <em>big move.</em>
             </h1>
             <p>
-              We bring thoughtful design and purposeful engineering together to
-              build software that moves your business forward.
+              Bring the ambition. We’ll bring the product thinking, design, and
+              engineering to turn it into software that works for your business.
             </p>
             <div className="hero-actions">
-              <Button href="/contact/">Start a project</Button>
-              <Link className="text-link" href="/services/">
-                Explore what we do
-                <ArrowUpRight size={16} />
-              </Link>
+              <Button href="/contact/" light>
+                Start a project
+              </Button>
+              <Button href="/solutions/" secondary>
+                Explore solutions
+              </Button>
+            </div>
+            <div className="hero-location">
+              <Globe2 size={16} />
+              <span>Lahore-based. International by design.</span>
             </div>
           </div>
-          <div className="hero-art">
-            <img
-              src="/images/brand-sculpture.webp"
-              alt="An original sculptural A, formed from interlocking mist-blue and ivory ribbons with a coral sphere"
-              width="1536"
-              height="1024"
-              fetchPriority="high"
-            />
-            <span className="hero-art-caption">
-              FORM + FUNCTION
+          <Reveal className="hero-brand-composition">
+            <div className="hero-art-frame">
+              <img
+                src="/images/brand-sculpture.webp"
+                alt="Acenara’s signature ribbon A sculpture with an integrated coral sphere"
+                width="1440"
+                height="960"
+                fetchPriority="high"
+              />
+              <div className="hero-art-top">
+                <img src="/brand/icon.svg" width="24" height="24" alt="" />
+                <span>FORM MEETS POSSIBILITY</span>
+                <span className="hero-small-orbit" />
+              </div>
+            </div>
+            <div className="hero-floating-tag hero-tag-top">
+              <span className="feature-icon">
+                <Lightbulb size={19} />
+              </span>
+              <div>
+                <small>THE THINKING BEHIND THE BUILD</small>
+                <strong>Clear vision. Connected expertise.</strong>
+              </div>
+              <CheckCircle2 size={17} />
+            </div>
+            <div className="hero-floating-tag hero-tag-bottom">
+              <span className="hero-tag-number">
+                A<span>+</span>
+              </span>
+              <div>
+                <strong>
+                  Designed to connect.
+                  <br />
+                  Engineered to move you forward.
+                </strong>
+                <span className="hero-tag-track">
+                  <i />
+                  Strategy
+                  <span />
+                  Design
+                  <span />
+                  Engineering
+                </span>
+              </div>
+            </div>
+            <div className="hero-orbit" aria-hidden="true" />
+          </Reveal>
+        </div>
+        <div className="container hero-capability-strip">
+          {[
+            {
+              icon: Layers3,
+              title: "Digital products",
+              text: "Web, mobile & SaaS",
+            },
+            {
+              icon: Cpu,
+              title: "Applied intelligence",
+              text: "AI & workflow automation",
+            },
+            {
+              icon: Cloud,
+              title: "Connected foundations",
+              text: "Cloud, data & integrations",
+            },
+            {
+              icon: ShieldCheck,
+              title: "Long-term thinking",
+              text: "Security, growth & care",
+            },
+          ].map((v) => (
+            <Link href="/services/" key={v.title}>
+              <v.icon size={22} />
+              <div>
+                <strong>{v.title}</strong>
+                <span>{v.text}</span>
+              </div>
+              <ArrowRight size={15} />
+            </Link>
+          ))}
+        </div>
+      </section>
+      <section className="value-section">
+        <div className="container value-grid">
+          <div>
+            <Eyebrow>A PARTNER FOR THE WHOLE PICTURE</Eyebrow>
+            <h2>
+              Your business is connected.
               <br />
-              <span>AN ACENARA BRAND EXPLORATION</span>
-            </span>
-            <span className="art-coordinate" aria-hidden="true">
-              A / 01
-            </span>
+              <em>Your software should be, too.</em>
+            </h2>
+          </div>
+          <div>
+            <p>
+              A website is one touchpoint. Behind it are the products, people,
+              data, and workflows that make a business run. We help bring those
+              parts into a clearer, more useful whole.
+            </p>
+            <Link className="text-link" href="/about/">
+              Get to know Acenara
+              <ArrowRight size={17} />
+            </Link>
           </div>
         </div>
-        <div className="container hero-baseline">
-          <span>SOFTWARE DEVELOPMENT & DIGITAL TECHNOLOGY STUDIO</span>
-          <span className="location-dot">
-            Lahore, Pakistan · Working worldwide
-          </span>
-          <a href="#what-we-do" aria-label="Discover our services">
-            <ArrowDown size={19} />
-          </a>
+      </section>
+      <section className="human-home-section">
+        <div className="container human-story">
+          <CollaborationPhoto kind="collaboration" />
+          <div className="human-story-copy">
+            <Eyebrow>THINK TOGETHER. BUILD WITH PURPOSE.</Eyebrow>
+            <h2>
+              Better conversations.
+              <br />
+              <em>Better software.</em>
+            </h2>
+            <p>
+              Good work happens when business context, design thinking, and
+              engineering decisions meet. We make space for the questions that
+              turn an ambitious idea into a useful product.
+            </p>
+            <Link className="text-link" href="/how-we-work/">
+              See how we collaborate
+              <ArrowRight size={17} />
+            </Link>
+          </div>
         </div>
       </section>
       <section className="section container" id="what-we-do">
-        <Reveal>
-          <SectionHeading
-            label="01 / What we do"
-            title={
-              <>
-                From the first spark
-                <br />
-                to the <em>next chapter.</em>
-              </>
-            }
-            text="One connected approach to your digital business. We help you shape it, build it, and keep it moving."
-          />
-        </Reveal>
-        <div className="service-editorial-list">
-          {services.map((s) => (
-            <Reveal key={s.slug}>
-              <Link
-                href={`/services/${s.slug}/`}
-                className="service-editorial-row"
-              >
-                <span className="service-index">/{s.number}</span>
-                <h3>{s.short}</h3>
-                <p>{s.outcome}</p>
-                <span className="circle-arrow">
-                  <ArrowUpRight size={23} strokeWidth={1.4} />
-                </span>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-        <div className="service-footnote">
-          <span>Strategy. Design. Engineering. Evolution.</span>
+        <SectionHeading
+          label="CONNECTED EXPERTISE"
+          title={
+            <>
+              Big-picture thinking.
+              <br />
+              <em>Hands-on capability.</em>
+            </>
+          }
+          text="From the first product decision to the systems behind the screen. Explore four connected areas of expertise."
+        >
           <Link className="text-link" href="/services/">
-            See all capabilities
-            <ArrowUpRight size={16} />
+            All 42 capabilities
+            <ArrowRight size={17} />
           </Link>
+        </SectionHeading>
+        <div className="service-showcase-grid">
+          {services.map((s, i) => {
+            const Icon = serviceIcons[i];
+            return (
+              <Reveal key={s.slug} delay={i * 0.04}>
+                <Link
+                  href={`/services/${s.slug}/`}
+                  className="service-showcase-card"
+                >
+                  <Visual kind={s.visual} compact />
+                  <div className="service-showcase-body">
+                    <div className="service-showcase-top">
+                      <span className="feature-icon">
+                        <Icon size={24} />
+                      </span>
+                      <span>
+                        0{i + 1} / {s.offerings.length} CAPABILITIES
+                      </span>
+                      <span className="service-next">
+                        <ArrowRight size={20} />
+                      </span>
+                    </div>
+                    <h3>{s.short}</h3>
+                    <p>{s.outcome}</p>
+                    <div className="service-preview-tags">
+                      {s.offerings.slice(0, 3).map((o) => (
+                        <span key={o.id}>{o.name}</span>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
-      <section className="experience-home section-dark">
-        <div className="container">
-          <Reveal>
-            <SectionHeading
-              label="02 / Platforms & possibilities"
-              title={
-                <>
-                  Complex challenges.
-                  <br />
-                  <em>Clearer experiences.</em>
-                </>
-              }
-              text="Experience across business domains informs how we approach your next product. Explore the workflows behind the interface."
-            />
-          </Reveal>
-          <Reveal>
-            <DashboardDemo />
-          </Reveal>
-          <div className="experience-baseline">
+      <section className="product-section">
+        <div className="container product-layout">
+          <div className="product-copy">
+            <Eyebrow light>PRODUCT EXPERIENCES, RECONSIDERED</Eyebrow>
+            <h2>
+              Make the complex
+              <br />
+              feel <em>effortless.</em>
+            </h2>
             <p>
-              From rental operations and real estate to learning, client
-              management, and connected business platforms.
+              The best interaction is the one that makes sense. We connect the
+              detail of a single screen to the full journey of the person using
+              it.
             </p>
-            <Link className="text-link" href="/expertise/">
-              Explore our expertise
-              <ArrowUpRight size={17} />
+            <div className="product-feature-list">
+              {[
+                {
+                  icon: Compass,
+                  title: "Designed around a real task",
+                  text: "Clear journeys, considered defaults, and useful next steps.",
+                },
+                {
+                  icon: Smartphone,
+                  title: "Consistent across touchpoints",
+                  text: "Interfaces that feel connected on mobile, desktop, and everywhere in between.",
+                },
+                {
+                  icon: Code2,
+                  title: "Built for what follows",
+                  text: "Maintainable foundations, thoughtful integrations, and room to evolve.",
+                },
+              ].map((v) => (
+                <div key={v.title}>
+                  <span>
+                    <v.icon size={21} />
+                  </span>
+                  <div>
+                    <h3>{v.title}</h3>
+                    <p>{v.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Button href="/services/software-development/" light>
+              Explore digital products
+            </Button>
+          </div>
+          <div className="product-demo-stage">
+            <span className="demo-stage-label">
+              <ScanLine size={15} />
+              INTERACTIVE PRODUCT STUDY
+            </span>
+            <BookingDemo />
+            <span className="demo-stage-hint">
+              Try selecting a date and time. This is an illustrative demo.
+            </span>
+          </div>
+        </div>
+      </section>
+      <section className="section container">
+        <SectionHeading
+          label="SOLUTIONS FOR THE WAY YOU WORK"
+          title={
+            <>
+              A useful answer starts
+              <br />
+              with the <em>right problem.</em>
+            </>
+          }
+          text="Choose a business challenge. We’ll connect the product, the workflow, and the engineering behind it."
+        />
+        <div className="solution-workspace">
+          <div className="solution-workspace-copy">
+            <div className="solution-heading-icon">
+              <Boxes size={26} />
+            </div>
+            <h3>
+              Built around
+              <br />
+              your business.
+            </h3>
+            <p>
+              Connected workspaces. Clearer operations. Better customer
+              journeys.
+            </p>
+            <div className="solution-mini-links">
+              {solutions.slice(0, 4).map((s, i) => (
+                <Link key={s.id} href={`/solutions/#${s.id}`}>
+                  <span>0{i + 1}</span>
+                  {s.title}
+                  <ArrowRight size={14} />
+                </Link>
+              ))}
+            </div>
+            <Link href="/solutions/" className="text-link">
+              Explore all solutions
+              <ArrowRight size={16} />
             </Link>
           </div>
-          <p className="concept-caption">
-            Original interface concept. Illustrative data; not a client product
-            screenshot.
-          </p>
+          <div className="solution-dashboard">
+            <DashboardDemo />
+            <div className="dashboard-concept-note">
+              <CheckCircle2 size={15} />
+              Original product concept · Illustrative data
+            </div>
+          </div>
         </div>
       </section>
-      <section className="section container craft-section">
-        <div className="craft-copy">
-          <Eyebrow>03 / Details make the difference</Eyebrow>
-          <h2>
-            Useful by design.
-            <br />
-            <em>Beautiful in use.</em>
-          </h2>
-          <p>
-            The best software makes a complicated task feel natural. We pay
-            attention to the journey, the interaction, and the moment everything
-            clicks.
-          </p>
-          <div className="craft-points">
+      <section className="experience-ribbon">
+        <div className="container">
+          <SectionHeading
+            label="SELECTED EXPERIENCE"
+            title={
+              <>
+                Different platforms.
+                <br />
+                <em>A broader perspective.</em>
+              </>
+            }
+            text="Prior development experience brings context to new challenges, from rental operations and real estate to learning, client management, and AI."
+          />
+          <PlatformExperience compact />
+          <div className="experience-sectors">
+            {experience.map((e) => (
+              <span key={e.name}>{e.name}</span>
+            ))}
+          </div>
+          <div className="section-bottom-link">
+            <Link className="text-link" href="/expertise/">
+              Explore platforms & experience
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
+      </section>
+      <section className="why-section">
+        <div className="container">
+          <SectionHeading
+            label="THE ACENARA APPROACH"
+            title={
+              <>
+                Strong work.
+                <br />
+                <em>Clear reasons behind it.</em>
+              </>
+            }
+            text="The quality of a product comes from the decisions behind it. Here’s what we bring to that conversation."
+          />
+          <div className="why-grid">
             {[
               {
                 icon: Compass,
-                title: "A clear purpose",
-                text: "Start with what people need to do.",
+                number: "01",
+                title: "Business context first",
+                text: "Understand the operation before proposing a stack. Keep product decisions connected to the people and outcomes they serve.",
               },
               {
-                icon: Layers,
-                title: "A connected experience",
-                text: "Make every screen part of the same story.",
+                icon: Layers3,
+                number: "02",
+                title: "Design and engineering together",
+                text: "Resolve the experience and the technical trade-offs in the same conversation, so the product works as well as it looks.",
               },
               {
-                icon: Code2,
-                title: "An engineered foundation",
-                text: "Build for the next change, not just the launch.",
+                icon: Workflow,
+                number: "03",
+                title: "Visible work. Shared direction.",
+                text: "Agree the scope, show working progress, and make changes understandable. Good collaboration should make the next decision easier.",
               },
-            ].map((p) => (
-              <div key={p.title}>
-                <p.icon size={23} strokeWidth={1.3} />
-                <div>
-                  <h3>{p.title}</h3>
-                  <p>{p.text}</p>
-                </div>
+            ].map((v) => (
+              <Reveal key={v.title}>
+                <article className="why-card">
+                  <div>
+                    <span className="feature-icon">
+                      <v.icon size={25} />
+                    </span>
+                    <span>{v.number}</span>
+                  </div>
+                  <h3>{v.title}</h3>
+                  <p>{v.text}</p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section container">
+        <SectionHeading
+          label="HOW WE WORK"
+          title={
+            <>
+              Less guesswork.
+              <br />
+              <em>More forward motion.</em>
+            </>
+          }
+          text="A considered process, from the first question to a useful release. Select a phase to see what happens next."
+        >
+          <Link className="text-link" href="/how-we-work/">
+            Our delivery approach
+            <ArrowRight size={16} />
+          </Link>
+        </SectionHeading>
+        <ProcessJourney />
+      </section>
+      <section className="capability-numbers">
+        <div className="container">
+          <div>
+            <Eyebrow light>THE BREADTH BEHIND THE WORK</Eyebrow>
+            <h2>
+              Connected expertise.
+              <br />
+              <em>One conversation.</em>
+            </h2>
+          </div>
+          <div className="capability-counts">
+            {[
+              { value: 4, label: "Connected service areas" },
+              { value: 42, label: "Defined capabilities" },
+              { value: 6, label: "Delivery phases" },
+              { value: 8, label: "Experience domains" },
+            ].map((v) => (
+              <div key={v.label}>
+                <strong>
+                  <Count value={v.value} />
+                  <span> /</span>
+                </strong>
+                <p>{v.label}</p>
               </div>
             ))}
           </div>
-          <Button href="/services/software-development/" secondary>
-            Explore product development
+        </div>
+      </section>
+      <section className="section container ai-rich-layout">
+        <Visual kind="ai" />
+        <div>
+          <Eyebrow>INTELLIGENCE WITH A PURPOSE</Eyebrow>
+          <h2>
+            Useful AI.
+            <br />
+            <em>Real-world context.</em>
+          </h2>
+          <p>
+            Start with the task, not the hype. We help you shape focused
+            assistance and automation around the way your business actually
+            operates.
+          </p>
+          <div className="ai-benefit-cards">
+            <div>
+              <Cpu size={23} />
+              <h3>Assistance that fits</h3>
+              <p>
+                Knowledge workflows, document processing, and task-specific
+                tools.
+              </p>
+            </div>
+            <div>
+              <Workflow size={23} />
+              <h3>Connected by design</h3>
+              <p>
+                Integrations, review points, and clear boundaries around action.
+              </p>
+            </div>
+          </div>
+          <Button href="/services/ai-automation/">
+            Explore AI & automation
           </Button>
         </div>
-        <Reveal className="craft-demo">
-          <BookingDemo />
-        </Reveal>
       </section>
-      <section className="principles-band">
-        <div className="container principles-inner">
-          <div>
-            <Eyebrow>A thoughtful way to work</Eyebrow>
-            <h2>
-              Good work starts
-              <br />
-              with <em>good questions.</em>
-            </h2>
-          </div>
-          <div className="principles-copy">
-            <p>
-              What should this product make possible? Where does the current
-              process get in the way? What is the most useful thing to build
-              first?
-            </p>
-            <p>
-              We work through those questions with you. Clear scope, visible
-              progress, and considered decisions keep the work connected to your
-              business.
-            </p>
-            <Link className="text-link" href="/about/">
-              Meet Acenara
-              <ArrowUpRight size={17} />
+      <section className="insights-rich-section">
+        <div className="container">
+          <SectionHeading
+            label="FROM THE ACENARA JOURNAL"
+            title={
+              <>
+                Ideas to build on.
+                <br />
+                <em>Perspectives worth keeping.</em>
+              </>
+            }
+          >
+            <Link className="text-link" href="/insights/">
+              Explore all insights
+              <ArrowRight size={17} />
             </Link>
+          </SectionHeading>
+          <div className="home-insights">
+            {articles.slice(0, 3).map((a, i) => (
+              <Link
+                className="insight-card"
+                href={`/insights/${a.slug}/`}
+                key={a.slug}
+              >
+                {i < 2 ? (
+                  <Visual kind={i === 0 ? "ai" : "product"} compact />
+                ) : (
+                  <Art kind={a.visual} />
+                )}
+                <div className="insight-card-content">
+                  <div className="insight-meta">
+                    <span>{a.category}</span>
+                    <span>{readingTime(a)} min read</span>
+                  </div>
+                  <h3>
+                    {a.title}
+                    <ArrowRight size={20} />
+                  </h3>
+                  <p>{a.excerpt}</p>
+                  <span className="insight-read">
+                    Read perspective
+                    <ArrowRight size={14} />
+                  </span>
+                </div>
+              </Link>
+            ))}
           </div>
-        </div>
-      </section>
-      <section className="section container">
-        <SectionHeading
-          label="04 / How we work"
-          title={
-            <>
-              A considered path.
-              <br />A <em>shared direction.</em>
-            </>
-          }
-          text="A clear process leaves more space for good thinking. Here’s how an idea becomes working software."
-        />
-        <div className="process-grid">
-          {process.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.035}>
-              <div className="process-step">
-                <span className="process-number">
-                  0{i + 1}
-                  <span aria-hidden="true">↗</span>
-                </span>
-                <h3>{p.title}</h3>
-                <p>{p.text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-      <section className="ai-feature">
-        <div className="container ai-feature-inner">
-          <Reveal>
-            <Art kind="ai" />
-          </Reveal>
-          <div>
-            <Eyebrow>Intelligence, with intention</Eyebrow>
-            <h2>
-              Put AI to work.
-              <br />
-              <em>Keep people in focus.</em>
-            </h2>
-            <p>
-              Useful AI begins with a specific problem. We connect assistance
-              and automation to real workflows, with clear boundaries and
-              thoughtful human review.
-            </p>
-            <ul className="check-list">
-              <li>
-                <Check size={16} />
-                Focused assistants and knowledge workflows
-              </li>
-              <li>
-                <Check size={16} />
-                Connected tools and business automation
-              </li>
-              <li>
-                <Check size={16} />
-                Evaluation, review, and practical integration
-              </li>
-            </ul>
-            <Link className="text-link" href="/services/ai-automation/">
-              Explore AI & automation
-              <ArrowUpRight size={17} />
-            </Link>
-          </div>
-        </div>
-      </section>
-      <section className="section container">
-        <SectionHeading
-          label="05 / Ideas worth sharing"
-          title={
-            <>
-              A little perspective.
-              <br />
-              <em>A useful next step.</em>
-            </>
-          }
-        >
-          <Link className="text-link" href="/insights/">
-            All insights
-            <ArrowUpRight size={16} />
-          </Link>
-        </SectionHeading>
-        <div className="home-insights">
-          {articles.slice(0, 3).map((a) => (
-            <Link
-              className="insight-card"
-              href={`/insights/${a.slug}/`}
-              key={a.slug}
-            >
-              <Art kind={a.visual} />
-              <div className="insight-meta">
-                <span>{a.category}</span>
-                <span>{readingTime(a)} min read</span>
-              </div>
-              <h3>
-                {a.title}
-                <ArrowUpRight size={20} />
-              </h3>
-              <p>{a.excerpt}</p>
-            </Link>
-          ))}
         </div>
       </section>
       <CTA />

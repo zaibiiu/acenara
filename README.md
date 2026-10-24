@@ -25,7 +25,7 @@ npm run preview
 
 ## Pages
 
-- Home, Services, About, Expertise, Insights, Contact, Privacy, and a custom 404.
+- 19 content routes: Home, Solutions, Services, How We Work, About, Experience, Insights, Contact, Privacy, four service-detail routes, and six article routes, plus a custom 404.
 - Four statically generated service detail routes with 42 anchored offerings, use cases, delivery approaches, and related capabilities.
 - Six statically generated original insight articles with publication date, reading time, table of contents, unique illustrations, and related articles.
 
@@ -37,17 +37,19 @@ npm run preview
 - `src/components/`: navigation, footer, motion wrapper, interface demos, illustrations, journal filtering, and enquiry flow.
 - `src/lib/enquiry.ts`: pure validation, project brief generation, and encoded contact links.
 - `src/lib/seo.ts`: public URL validation and consistent metadata.
-- `src/app/globals.css`: responsive design tokens and component styles.
+- `src/app/globals.css`: foundational layout primitives.
+- `src/app/redesign.css`: the richer visual system, component styling, and responsive refinements.
+- `src/content/studio.ts`: solution areas, delivery-phase details, and provided platform names.
 
 ## Identity and artwork
 
-Palette: mist blue `#2F5061`, coral pink `#E57F84`, warm off-white `#F7F5F2`, and deep ink `#172C39`. Manrope and Instrument Serif are bundled locally through Fontsource, with license files in their packages. Iconography uses Lucide.
+Palette: mist blue `#2F5061`, coral pink `#E57F84`, warm off-white `#F7F5F2`, and deep ink `#172C39`. Manrope is bundled locally through Fontsource; its license is included under `public/licenses/`. Iconography uses Lucide.
 
 `public/brand/` contains primary/light/dark logos, the standalone brand mark, simplified favicon SVG, Apple touch icon, social SVG/PNG, and the recorded three-direction logo exploration. Wordmarks are outlined vector paths. `public/favicon.ico` contains 16, 32, and 48 pixel images.
 
-`npm run brand:build` regenerates these assets from the locally bundled Manrope font and original vector geometry. It also compresses the original generated sculpture to WebP using Sharp (provided by Next.js).
+`npm run brand:build` regenerates these assets from the locally bundled Manrope font and original vector geometry. `npm run images:build` compresses the eight new original source images from `design/source-images/` to optimized WebP files in `public/images/`.
 
-The original sculpture source and optimized web asset are in `public/images/`. The artwork is a conceptual brand composition, not a photo of premises. See `docs/ARTWORK.md` for provenance and the generation prompt. Product visuals are original SVG/React compositions, and the booking/calendar and analytics interfaces use illustrative data.
+The original sculpture source and optimized web asset are in `public/images/`. The artwork is a conceptual brand composition, not a photo of premises. See `docs/ARTWORK.md` for provenance and the generation prompt. Product visuals combine original SVG/React compositions and generated 3D artwork. Four representative generated collaboration photographs are used with visible captions across Home, About, Services, Solutions, How We Work, and Contact. They are not photographs of actual Acenara employees, clients, or premises. Exact prompts and source/output mapping are recorded in `design/asset-prompts.json`. The booking/calendar and analytics interfaces use illustrative data.
 
 ## Enquiries
 
@@ -91,4 +93,8 @@ See `docs/QA.md` for the final recorded build and browser results.
 
 ## Truthful content
 
-The site uses no fabricated clients, reviews, employee counts, company age, certifications, legal structure, or guaranteed support coverage. Prior development experience is described by domain; supplied platform names are withheld because permission and attribution are unconfirmed. No third-party project screenshots, external project links, or logos are used. Support scope and response expectations are agreed per engagement.
+The site uses no fabricated clients, reviews, employee counts, company age, certifications, legal structure, or guaranteed support coverage. Prior development experience is described by domain; supplied platform names appear as plain, consistently styled experience tiles with context for work through previous teams. They do not imply ownership, endorsement, or direct Acenara contracts. No third-party project screenshots, external project links, or logos are used. Support scope and response expectations are agreed per engagement.
+
+## Redesign interactions
+
+The Services mega menu supports hover, click, keyboard opening, Escape dismissal, and grouped service links. Mobile navigation uses a modal dialog with expandable service groups. The six-phase delivery explorer supports arrow keys, Home, and End. The booking demo animates date/time selection and clamps a December 31 selection when returning to November. Dashboard views and periods update illustrative data; bars animate and expose values on hover, focus, or click. Numeric capability indicators count real content categories, not invented company achievements. All motion respects reduced-motion preferences.

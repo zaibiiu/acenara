@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ArrowUpRight, ArrowDown } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
 import { CTA, PageIntro, Eyebrow, Button } from "@/components/ui";
-import { Art } from "@/components/art";
+import { Visual } from "@/components/visual";
+import { CollaborationPhoto } from "@/components/collaboration-photo";
 import { Reveal } from "@/components/motion";
 import { services } from "@/content/services";
 import { metadata } from "@/lib/seo";
@@ -42,7 +43,7 @@ export default function Services() {
           <Reveal key={s.slug}>
             <section className="service-story" id={s.slug}>
               <div className="service-story-art">
-                <Art kind={s.visual} />
+                <Visual kind={s.visual} />
                 <span className="art-label">
                   ACENARA CAPABILITIES / {s.number}
                 </span>
@@ -58,7 +59,7 @@ export default function Services() {
                     <li key={o.id}>
                       <Link href={`/services/${s.slug}/#${o.id}`}>
                         {o.name}
-                        <ArrowUpRight size={14} />
+                        <ArrowRight size={14} />
                       </Link>
                     </li>
                   ))}
@@ -74,6 +75,26 @@ export default function Services() {
           </Reveal>
         ))}
       </div>
+      <section className="container human-story human-reverse">
+        <CollaborationPhoto kind="design" />
+        <div className="human-story-copy">
+          <Eyebrow>DESIGN AND ENGINEERING, IN CONVERSATION</Eyebrow>
+          <h2>
+            From a shared idea
+            <br />
+            to a <em>considered product.</em>
+          </h2>
+          <p>
+            The strongest product decisions connect what a business needs with
+            what a person can understand. We use prototypes, working examples,
+            and direct feedback to make that connection tangible.
+          </p>
+          <Link className="text-link" href="/how-we-work/">
+            Explore our approach
+            <ArrowRight size={17} />
+          </Link>
+        </div>
+      </section>
       <section className="container service-help">
         <div>
           <Eyebrow>START WITH THE PROBLEM</Eyebrow>

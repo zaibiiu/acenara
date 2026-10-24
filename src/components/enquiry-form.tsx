@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { WhatsAppIcon } from "./icons";
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowUpRight,
   Check,
   CheckCheck,
   Copy,
@@ -164,7 +164,7 @@ export function EnquiryForm() {
             it. We don’t submit it in the background.
           </p>
           <a href="mailto:zakhter843@gmail.com">
-            Prefer email? Say hello <ArrowUpRight size={15} />
+            Prefer email? Say hello <ArrowRight size={15} />
           </a>
         </div>
       </aside>
@@ -227,14 +227,14 @@ export function EnquiryForm() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <MessageCircle size={18} />
+                <WhatsAppIcon width="18" height="18" />
                 Open WhatsApp
-                <ArrowUpRight size={17} />
+                <ArrowRight size={17} />
               </a>
               <a className="button button-secondary" href={links.email}>
                 <Mail size={18} />
                 Open email app
-                <ArrowUpRight size={17} />
+                <ArrowRight size={17} />
               </a>
               <button className="text-button" onClick={copy}>
                 <Copy size={17} />

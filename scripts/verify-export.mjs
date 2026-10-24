@@ -69,12 +69,20 @@ for (const file of pages) {
     issues.push(`${file}: local origin leaked into export`);
 }
 assert.ok(
-  pages.length >= 19,
-  `Expected at least 19 HTML files; got ${pages.length}`,
+  pages.length >= 22,
+  `Expected at least 22 HTML files; got ${pages.length}`,
 );
 assert.deepEqual(issues, []);
 for (const file of [
   "favicon.ico",
+  "solutions/index.html",
+  "how-we-work/index.html",
+  "brand/icon-dark.svg",
+  "brand/app-icon.png",
+  "images/people-collaboration.webp",
+  "images/people-strategy.webp",
+  "images/people-design.webp",
+  "images/people-architecture.webp",
   "brand/logo.svg",
   "brand/logo-dark.svg",
   "brand/icon.svg",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { articles, readingTime } from "@/content/insights";
 import { Art } from "@/components/art";
 import { CTA, Eyebrow } from "@/components/ui";
@@ -125,7 +125,7 @@ export default async function Article({
               </span>
               <h3>
                 {r.title}
-                <ArrowUpRight size={20} />
+                <ArrowRight size={20} />
               </h3>
             </Link>
           ))}

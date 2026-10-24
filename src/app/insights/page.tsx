@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { PageIntro, CTA, Eyebrow } from "@/components/ui";
 import { InsightList } from "@/components/insight-list";
 import { Art } from "@/components/art";
@@ -38,7 +38,7 @@ export default function Insights() {
             <p>{a.excerpt}</p>
             <span className="text-link">
               Read the perspective
-              <ArrowUpRight size={18} />
+              <ArrowRight size={18} />
             </span>
             <time dateTime={a.date}>24 October 2026</time>
           </div>

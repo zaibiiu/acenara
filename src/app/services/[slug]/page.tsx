@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { services } from "@/content/services";
 import { metadata } from "@/lib/seo";
-import { Art } from "@/components/art";
+import { Visual } from "@/components/visual";
 import { CTA, Eyebrow, Button, SectionHeading } from "@/components/ui";
 import { BookingDemo } from "@/components/demos";
 export const dynamicParams = false;
@@ -39,7 +39,7 @@ export default async function ServiceDetail({
           <p>{s.intro}</p>
           <Button href="/contact/">Discuss your project</Button>
         </div>
-        <Art kind={s.visual} />
+        <Visual kind={s.visual} />
       </section>
       <section className="container section detail-body">
         <aside className="detail-sidebar">
@@ -53,7 +53,7 @@ export default async function ServiceDetail({
           </nav>
           <Link className="text-link" href="/contact/">
             Talk to Acenara
-            <ArrowUpRight size={16} />
+            <ArrowRight size={16} />
           </Link>
         </aside>
         <div>
@@ -77,7 +77,7 @@ export default async function ServiceDetail({
                   href={`/contact/?service=${encodeURIComponent(o.name)}`}
                   aria-label={`Discuss ${o.name}`}
                 >
-                  <ArrowUpRight size={22} />
+                  <ArrowRight size={22} />
                 </Link>
               </section>
             ))}
@@ -165,7 +165,7 @@ export default async function ServiceDetail({
               <Link key={r.slug} href={`/services/${r.slug}/`}>
                 <span>{r.number}</span>
                 <h3>{r.short}</h3>
-                <ArrowUpRight size={22} />
+                <ArrowRight size={22} />
               </Link>
             ))}
         </div>

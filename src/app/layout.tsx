@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/manrope";
-import "@fontsource/instrument-serif/latin-400.css";
-import "@fontsource/instrument-serif/latin-400-italic.css";
 import "./globals.css";
+import "./redesign.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { siteUrl } from "@/lib/seo";

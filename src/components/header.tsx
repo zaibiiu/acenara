@@ -1,24 +1,83 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { navigation } from "@/content/company";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import {
+  ArrowRight,
+  ChevronDown,
+  Menu,
+  X,
+  Mail,
+  Cpu,
+  Layers3,
+  Cloud,
+  ShieldCheck,
+  Globe2,
+} from "lucide-react";
+import { company, navigation } from "@/content/company";
+import { services, type Service } from "@/content/services";
+import { WhatsAppIcon } from "./icons";
+const icons = [Cpu, Layers3, Cloud, ShieldCheck];
+
+const featuredIds: Record<string, string[]> = {
+  "ai-automation": [
+    "strategy",
+    "generative-ai",
+    "assistants",
+    "predictive",
+    "business-automation",
+    "workflows",
+  ],
+  "software-development": [
+    "custom-software",
+    "web-apps",
+    "mobile",
+    "saas",
+    "websites",
+    "commerce",
+  ],
+  "cloud-data": [
+    "migration",
+    "devops",
+    "engineering",
+    "dashboards",
+    "databases",
+    "architecture",
+  ],
+  "security-growth-support": [
+    "security-consulting",
+    "assessment",
+    "consulting",
+    "legacy",
+    "crm",
+    "seo",
+  ],
+};
+function featuredOfferings(service: Service) {
+  return service.offerings.filter((o) =>
+    featuredIds[service.slug]?.includes(o.id),
+  );
+}
 
 export function Header() {
   const path = usePathname();
-  const [open, setOpen] = useState(false);
+  const [mobile, setMobile] = useState(false);
+  const [mega, setMega] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
+  const servicesTrigger = useRef<HTMLButtonElement>(null);
+  const megaRoot = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 20);
+    fn();
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
   }, []);
   useEffect(() => {
-    if (open) {
+    if (mobile) {
       dialog.current?.showModal();
       document.body.style.overflow = "hidden";
     } else {
@@ -28,61 +87,217 @@ export function Header() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [mobile]);
   useEffect(() => {
-    setOpen(false);
+    setMobile(false);
+    setMega(false);
   }, [path]);
+  useEffect(() => {
+    if (!mega) return;
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMega(false);
+        servicesTrigger.current?.focus();
+      }
+    };
+    const outside = (e: PointerEvent) => {
+      if (!megaRoot.current?.contains(e.target as Node)) setMega(false);
+    };
+    document.addEventListener("keydown", key);
+    document.addEventListener("pointerdown", outside);
+    return () => {
+      document.removeEventListener("keydown", key);
+      document.removeEventListener("pointerdown", outside);
+    };
+  }, [mega]);
   const close = () => {
-    setOpen(false);
+    setMobile(false);
     trigger.current?.focus();
   };
   return (
-    <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
+    <header
+      className={`site-header site-header-rich ${scrolled ? "is-scrolled" : ""}`}
+    >
+      <div className="header-utility">
+        <div className="container">
+          <span>
+            <Globe2 size={12} />
+            Lahore, Pakistan
+            <span className="utility-dot" />
+            Working internationally
+          </span>
+          <div>
+            <a href={`mailto:${company.email}`}>
+              <Mail size={13} />
+              <span>Email the studio</span>
+            </a>
+            <a
+              href={`https://wa.me/${company.whatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+              className="utility-talk"
+            >
+              <WhatsAppIcon />
+              Let’s talk
+            </a>
+          </div>
+        </div>
+      </div>
       <div className="container header-inner">
-        <Link className="brand" href="/" aria-label="Acenara home">
-          <img src="/brand/logo.svg" alt="Acenara" width="192" height="42" />
+        <Link href="/" className="brand" aria-label="Acenara home">
+          <img src="/brand/logo.svg" alt="Acenara" width="196" height="44" />
         </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
-          {navigation
-            .filter((n) => n.label !== "Home" && n.label !== "Contact")
-            .map((n) => (
+          {navigation.map((n) =>
+            n.label === "Services" ? (
+              <div
+                key={n.href}
+                className="mega-root"
+                ref={megaRoot}
+                onMouseEnter={() => setMega(true)}
+                onMouseLeave={() => setMega(false)}
+                onBlurCapture={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget as Node))
+                    setMega(false);
+                }}
+              >
+                <button
+                  ref={servicesTrigger}
+                  className={`nav-services ${mega ? "is-open" : ""}`}
+                  aria-expanded={mega}
+                  aria-controls="services-mega-menu"
+                  onClick={() => setMega(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowDown") {
+                      e.preventDefault();
+                      setMega(true);
+                      requestAnimationFrame(() =>
+                        document
+                          .querySelector<HTMLAnchorElement>(
+                            "#services-mega-menu a",
+                          )
+                          ?.focus(),
+                      );
+                    }
+                  }}
+                >
+                  Services
+                  <ChevronDown size={13} />
+                </button>
+                <AnimatePresence>
+                  {mega && (
+                    <motion.div
+                      id="services-mega-menu"
+                      className="services-mega-menu"
+                      initial={reduce ? false : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={reduce ? {} : { opacity: 0, y: 6 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="mega-heading">
+                        <div>
+                          <span className="eyebrow">
+                            CONNECTED CAPABILITIES
+                          </span>
+                          <h2>One partner for your next digital chapter.</h2>
+                        </div>
+                        <Link href="/services/" onClick={() => setMega(false)}>
+                          Explore all services
+                          <ArrowRight size={16} />
+                        </Link>
+                      </div>
+                      <div className="mega-columns">
+                        {services.map((s, i) => {
+                          const Icon = icons[i];
+                          return (
+                            <div className="mega-column" key={s.slug}>
+                              <Link
+                                className="mega-category"
+                                href={`/services/${s.slug}/`}
+                                onClick={() => setMega(false)}
+                              >
+                                <span>
+                                  <Icon size={23} />
+                                </span>
+                                <div>
+                                  <strong>{s.title}</strong>
+                                  <small>{s.outcome}</small>
+                                </div>
+                              </Link>
+                              <ul>
+                                {featuredOfferings(s).map((o) => (
+                                  <li key={o.id}>
+                                    <Link
+                                      href={`/services/${s.slug}/#${o.id}`}
+                                      onClick={() => setMega(false)}
+                                    >
+                                      {o.name}
+                                      <ArrowRight size={12} />
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="mega-bottom">
+                        <span>
+                          Have a business problem, rather than a technical
+                          brief? Start there.
+                        </span>
+                        <Link href="/contact/" onClick={() => setMega(false)}>
+                          Let’s shape the next step
+                          <ArrowRight size={16} />
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
               <Link
                 key={n.href}
                 href={n.href}
                 aria-current={
-                  path.startsWith(n.href.slice(0, -1)) ? "page" : undefined
+                  (
+                    n.href === "/"
+                      ? path === "/"
+                      : path.startsWith(n.href.slice(0, -1))
+                  )
+                    ? "page"
+                    : undefined
                 }
               >
                 {n.label}
               </Link>
-            ))}
+            ),
+          )}
         </nav>
         <Link className="header-cta" href="/contact/">
-          Let’s talk <ArrowUpRight size={16} aria-hidden="true" />
+          Start a project
+          <ArrowRight size={17} />
         </Link>
         <button
-          ref={trigger}
           className="mobile-toggle"
+          ref={trigger}
           aria-label="Open navigation"
-          aria-expanded={open}
+          aria-expanded={mobile}
           aria-controls="mobile-navigation"
-          onClick={() => setOpen(true)}
+          onClick={() => setMobile(true)}
         >
           <Menu />
         </button>
         <dialog
-          id="mobile-navigation"
           ref={dialog}
+          id="mobile-navigation"
           className="mobile-dialog"
+          aria-label="Main navigation"
           onCancel={(e) => {
             e.preventDefault();
             close();
           }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) close();
-          }}
-          onClose={() => setOpen(false)}
-          aria-label="Main navigation"
+          onClose={() => setMobile(false)}
         >
           <div className="mobile-menu">
             <div className="mobile-menu-top">
@@ -90,7 +305,7 @@ export function Header() {
                 src="/brand/logo.svg"
                 alt="Acenara"
                 width="174"
-                height="38"
+                height="40"
               />
               <button aria-label="Close navigation" onClick={close}>
                 <X />
@@ -101,26 +316,55 @@ export function Header() {
                 <Link key={n.href} href={n.href} onClick={close}>
                   <span className="small">0{i + 1}</span>
                   {n.label}
-                  <ArrowUpRight size={22} aria-hidden="true" />
+                  <ArrowRight size={19} />
                 </Link>
               ))}
             </nav>
-            <div className="mobile-services">
-              <p className="eyebrow">Explore our services</p>
-              <Link href="/services/ai-automation/" onClick={close}>
-                AI & automation
-              </Link>
-              <Link href="/services/software-development/" onClick={close}>
-                Design & development
-              </Link>
-              <Link href="/services/cloud-data/" onClick={close}>
-                Cloud & data
-              </Link>
-              <Link href="/services/security-growth-support/" onClick={close}>
-                Security, growth & support
-              </Link>
+            <div className="mobile-service-groups">
+              <p className="eyebrow">EXPLORE OUR CAPABILITIES</p>
+              {services.map((s, i) => {
+                const Icon = icons[i];
+                return (
+                  <details key={s.slug}>
+                    <summary>
+                      <Icon size={18} />
+                      {s.title}
+                      <ChevronDown size={16} />
+                    </summary>
+                    <div>
+                      <Link href={`/services/${s.slug}/`} onClick={close}>
+                        View this capability
+                        <ArrowRight size={14} />
+                      </Link>
+                      {featuredOfferings(s).map((o) => (
+                        <Link
+                          key={o.id}
+                          href={`/services/${s.slug}/#${o.id}`}
+                          onClick={close}
+                        >
+                          {o.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </details>
+                );
+              })}
             </div>
-            <p className="small">Lahore, Pakistan · Working internationally</p>
+            <div className="mobile-contact-actions">
+              <a href={`mailto:${company.email}`}>
+                <Mail size={17} />
+                Email us
+              </a>
+              <a
+                className="whatsapp-link"
+                href={`https://wa.me/${company.whatsapp}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <WhatsAppIcon />
+                Let’s talk
+              </a>
+            </div>
           </div>
         </dialog>
       </div>

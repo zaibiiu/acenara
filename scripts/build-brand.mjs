@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const fontkit = require("fontkit");
 const sharp = require("sharp");
 const root = process.cwd();
-const dir = path.join(root, "public", "brand");
+const dir = path.join(root, "public/brand");
 await fs.mkdir(dir, { recursive: true });
 const font = fontkit.openSync(
   path.join(
@@ -13,53 +13,73 @@ const font = fontkit.openSync(
     "node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
   ),
 );
-const run = font.layout("Acenara");
-const width = run.positions.reduce((a, p) => a + p.xAdvance, 0);
-const scale = 176 / width;
-function wordmark(color) {
-  let x = 78;
+function typePaths(text, x, baseline, size, color, stroke = 15) {
+  const run = font.layout(text);
+  const scale = size / font.unitsPerEm;
   return run.glyphs
     .map((g, i) => {
-      const p = run.positions[i];
-      const out = `<path d="${g.path.toSVG()}" transform="translate(${x + p.xOffset * scale} ${43 - p.yOffset * scale}) scale(${scale} ${-scale})" fill="${color}"/>`;
-      x += p.xAdvance * scale;
+      const pos = run.positions[i];
+      const c = typeof color === "function" ? color(i) : color;
+      const out = `<path d="${g.path.toSVG()}" transform="translate(${x + pos.xOffset * scale} ${baseline - pos.yOffset * scale}) scale(${scale} ${-scale})" fill="${c}" stroke="${c}" stroke-width="${stroke}" stroke-linejoin="round" paint-order="stroke"/>`;
+      x += pos.xAdvance * scale;
       return out;
     })
     .join("");
 }
-function mark(color = "#2F5061") {
-  return `<path d="M6 52 27 7h12L18 52H6Z" fill="${color}"/><path d="m39 18 17 34H43L32 30l7-12Z" fill="${color}"/><path d="M25 35h10l5 10H20l5-10Z" fill="#E57F84"/>`;
+function mark(dark = false) {
+  return `<path d="M6 53 25 11Q28 4 36 8L17 53H6Z" fill="${dark ? "#BDD6E3" : "#2F5061"}"/><path d="m35 9 22 44H44L29 22l6-13Z" fill="${dark ? "#87ADBF" : "#6F91A2"}"/><path d="M16 43Q32 22 46 43l5 10H39q-9-15-19 0H11l5-10Z" fill="${dark ? "#E1EBEF" : "#2F5061"}"/><circle cx="38" cy="30" r="5.1" fill="#E57F84"/>`;
 }
-function svg(content, w = 264, h = 62) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img">${content}</svg>`;
+function svg(content, w = 285, h = 64) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${content}</svg>`;
 }
-await fs.writeFile(
-  path.join(dir, "logo.svg"),
-  svg(mark() + wordmark("#172C39")),
-);
-await fs.writeFile(
-  path.join(dir, "logo-light.svg"),
-  svg(mark() + wordmark("#172C39")),
-);
-await fs.writeFile(
-  path.join(dir, "logo-dark.svg"),
-  svg(mark("#F7F5F2") + wordmark("#F7F5F2")),
-);
-const icon = svg(mark(), 62, 62);
+function logo(dark = false) {
+  return svg(
+    mark(dark) +
+      typePaths(
+        "Acenara",
+        76,
+        44,
+        46,
+        (i) => (i < 4 ? (dark ? "#BED7E4" : "#2F5061") : "#E57F84"),
+        19,
+      ),
+  );
+}
+for (const [name, dark] of [
+  ["logo.svg", false],
+  ["logo-light.svg", false],
+  ["logo-dark.svg", true],
+])
+  await fs.writeFile(path.join(dir, name), logo(dark));
+const icon = svg(mark(), 64, 64);
+const iconDark = svg(mark(true), 64, 64);
 await fs.writeFile(path.join(dir, "icon.svg"), icon);
+await fs.writeFile(path.join(dir, "icon-dark.svg"), iconDark);
 await fs.writeFile(path.join(dir, "favicon.svg"), icon);
 await sharp(
   Buffer.from(
     svg(
-      `<rect width="62" height="62" rx="12" fill="#F7F5F2"/>${mark()}`,
-      62,
-      62,
+      `<rect width="64" height="64" rx="13" fill="#F7F5F2"/>${mark()}`,
+      64,
+      64,
     ),
   ),
 )
   .resize(180, 180)
   .png()
   .toFile(path.join(dir, "apple-touch-icon.png"));
+await sharp(
+  Buffer.from(
+    svg(
+      `<rect width="64" height="64" rx="13" fill="#172C39"/>${mark(true)}`,
+      64,
+      64,
+    ),
+  ),
+)
+  .resize(512, 512)
+  .png()
+  .toFile(path.join(dir, "app-icon.png"));
 const pngs = await Promise.all(
   [16, 32, 48].map((size) =>
     sharp(Buffer.from(icon)).resize(size, size).png().toBuffer(),
@@ -84,25 +104,12 @@ await fs.writeFile(
   Buffer.concat([header, ...pngs]),
 );
 const social = svg(
-  `<rect width="1200" height="630" fill="#F7F5F2"/><path d="M680 0h520v630H680z" fill="#E5EBE8"/><g transform="translate(750 115) scale(5)">${mark()}</g><g transform="translate(80 85) scale(1.4)">${mark() + wordmark("#172C39")}</g><text x="85" y="320" fill="#172C39" font-family="Georgia,serif" font-size="65">Good ideas.</text><text x="85" y="397" fill="#2F5061" font-family="Georgia,serif" font-style="italic" font-size="65">Exceptional execution.</text><text x="85" y="525" fill="#536975" font-family="sans-serif" font-size="15" letter-spacing="2">SOFTWARE DEVELOPMENT &amp; DIGITAL TECHNOLOGY STUDIO</text><rect x="85" y="565" width="50" height="4" fill="#E57F84"/>`,
+  `<rect width="1200" height="630" fill="#172C39"/><path d="M790 0h410v630H790Z" fill="#244453"/><circle cx="1040" cy="315" r="235" stroke="#496D80" fill="none"/><circle cx="1040" cy="315" r="190" stroke="#365C70" fill="none"/><g transform="translate(840 140) scale(4.4)">${mark(true)}</g><g transform="translate(68 60) scale(1.3)">${mark(true) + typePaths("Acenara", 76, 44, 46, (i) => (i < 4 ? "#BED7E4" : "#E57F84"), 19)}</g>${typePaths("Software for", 75, 295, 70, "#F7F5F2", 20)}${typePaths("your next big move.", 75, 385, 65, "#E57F84", 20)}${typePaths("SOFTWARE DEVELOPMENT & DIGITAL TECHNOLOGY", 78, 522, 16, "#BBD2DF", 5)}${typePaths("LAHORE, PAKISTAN / WORKING INTERNATIONALLY", 78, 555, 12, "#9CBACB", 3)}`,
   1200,
   630,
 );
 await fs.writeFile(path.join(dir, "social.svg"), social);
 await sharp(Buffer.from(social)).png().toFile(path.join(dir, "social.png"));
-await sharp(path.join(root, "public/images/brand-sculpture-original.png"))
-  .resize(1440)
-  .webp({ quality: 85 })
-  .toFile(path.join(root, "public/images/brand-sculpture.webp"));
-// Recorded internal directions: open aperture, continuous ribbon, and ascending planes.
-await fs.writeFile(
-  path.join(dir, "logo-explorations.svg"),
-  svg(
-    `<rect width="900" height="280" fill="#F7F5F2"/><g transform="translate(110 60) scale(2)">${mark()}</g><g transform="translate(400 65)" fill="none" stroke="#2F5061" stroke-width="18"><path d="m0 105 45-105 47 105M22 65h47"/></g><g transform="translate(665 65)" fill="#2F5061"><path d="m0 105 45-105 12 28-35 77ZM59 39l29 66H66L48 63Z"/><path d="M25 70h31l9 17H17Z" fill="#E57F84"/></g><text x="80" y="235" font-family="sans-serif" font-size="13" fill="#2F5061">01 / OPEN APERTURE — SELECTED</text><text x="375" y="235" font-family="sans-serif" font-size="13" fill="#2F5061">02 / CONTINUOUS RIBBON</text><text x="660" y="235" font-family="sans-serif" font-size="13" fill="#2F5061">03 / ASCENDING PLANES</text>`,
-    900,
-    280,
-  ),
-);
 console.log(
-  "Generated outlined SVG logos, brand mark, favicon, social card, and compressed hero.",
+  "Updated ribbon-A identity, coral sphere, bold two-color outlined wordmark, favicon, app icon, and social graphic.",
 );

@@ -1,7 +1,9 @@
-import { ArrowUpRight, Compass, Code2, HeartHandshake } from "lucide-react";
+import { ArrowRight, Compass, Code2, HeartHandshake } from "lucide-react";
 import Link from "next/link";
 import { CTA, PageIntro, Eyebrow, SectionHeading } from "@/components/ui";
-import { process, company } from "@/content/company";
+import { ProcessJourney } from "@/components/process-journey";
+import { CollaborationPhoto } from "@/components/collaboration-photo";
+import { company } from "@/content/company";
 import { metadata } from "@/lib/seo";
 export const generateMetadata = () =>
   metadata(
@@ -23,21 +25,16 @@ export default function About() {
         }
         text="We’re a software development and digital technology studio in Lahore, bringing a product mindset to the challenges of building a digital business."
       />
-      <section className="container about-brand-scene">
-        <img
-          src="/images/brand-sculpture.webp"
-          alt="Original Acenara architectural brand sculpture in ivory and mist blue"
-          width="1536"
-          height="1024"
+      <section className="container">
+        <CollaborationPhoto
+          kind="collaboration"
+          className="about-human-photo"
         />
-        <div>
-          <span>ACENARA / FORM & FUNCTION</span>
-          <p>
-            Good design gives an idea shape.
-            <br />
-            Good engineering gives it possibility.
-          </p>
-        </div>
+        <p className="about-photo-note">
+          The collaboration scenes on this website are representative generated
+          imagery. They illustrate professional ways of working and do not
+          depict Acenara’s actual employees, clients, or premises.
+        </p>
       </section>
       <section className="container section about-statement">
         <Eyebrow>THE STUDIO</Eyebrow>
@@ -134,7 +131,7 @@ export default function About() {
           </p>
           <a className="text-link" href={`mailto:${company.email}`}>
             Say hello to Zohaib
-            <ArrowUpRight size={17} />
+            <ArrowRight size={17} />
           </a>
         </div>
       </section>
@@ -150,21 +147,10 @@ export default function About() {
           }
           text="Each project has its own constraints. This is the clear, collaborative structure we build around them."
         />
-        <div className="process-grid">
-          {process.map((p, i) => (
-            <div className="process-step" key={p.title}>
-              <span className="process-number">
-                0{i + 1}
-                <span aria-hidden="true">↗</span>
-              </span>
-              <h3>{p.title}</h3>
-              <p>{p.text}</p>
-            </div>
-          ))}
-        </div>
+        <ProcessJourney />
         <Link href="/services/" className="text-link">
           Explore our capabilities
-          <ArrowUpRight size={16} />
+          <ArrowRight size={16} />
         </Link>
       </section>
       <CTA />

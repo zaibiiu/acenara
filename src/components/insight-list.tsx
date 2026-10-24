@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { articles, readingTime } from "@/content/insights";
 import { Art } from "./art";
 
@@ -27,7 +27,7 @@ export function InsightList() {
         ))}
       </div>
       <p className="sr-only" aria-live="polite">
-        {visible.length} insights shown
+        {visible.length} {visible.length === 1 ? "insight" : "insights"} shown
       </p>
       <div className="insight-grid">
         {visible.map((a) => (
@@ -43,7 +43,7 @@ export function InsightList() {
             </div>
             <h2>
               {a.title}
-              <ArrowUpRight size={22} />
+              <ArrowRight size={22} />
             </h2>
             <p>{a.excerpt}</p>
             <time dateTime={a.date}>24 October 2026</time>
